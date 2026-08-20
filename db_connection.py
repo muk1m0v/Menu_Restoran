@@ -1,43 +1,47 @@
 import psycopg2
 
+conn = psycopg2.connect(
+    dbname="Menu", user="postgres", password="MUKIMO707", host="localhost", port="5432"
+)
+conn.autocommit = True
 
-def get_connection():
-    try:
-        conn = psycopg2.connect(
-            host='localhost',
-            user='postgres',
-            database='task_meneger_db',
-            port=5432,
-            password='MUKIMO707'
-        )
-        return conn
-    except Exception as err:
-        print(f'Connection Error: {err}')
+current_user = None
 
-
-
-def init_tables():
-    try:
-        with get_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS users
-            (
+def init_db():
+    with conn.cursor() as cur:
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS Foods (
                 id SERIAL PRIMARY KEY,
-                username varchar(50) not null unique,
-                password varchar(50) not null,
-                email varchar(100) not null unique
+                food_name VARCHAR(100) NOT NULL,
+                price SMALLINT NOT NULL
             );
-            CREATE TABLE IF NOT EXISTS tasks
-            (
-                id serial primary key,
-                title varchar(150) not null,
-                user_id int references users(id) on delete cascade,
-                due_date timestamp default now(),
-                is_completed boolean default false,
-                created_at timestamp default now()
-            )
-            ''')
-            conn.commit()
-    except Exception as err:
-        print('Cretion tables error: ',err)
+            CREATE TABLE IF NOT EXISTS Customers (
+                id SERIAL PRIMARY KEY,
+                username VARCHAR(50) UNIQUE NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                email VARCHAR(100),
+                phone_number VARCHAR(20),
+                is_admin BOOLEAN DEFAULT FALSE
+            );
+            CREATE TABLE IF NOT EXISTS Orders (
+                id SERIAL PRIMARY KEY,
+                customer_id INT REFERENCES Customers(id) ON DELETE CASCADE,
+                total_price SMALLINT DEFAULT 0,
+                table_number SMALLINT,
+                order_date TIMESTAMP DEFAULT NOW(),
+                status VARCHAR(20) DEFAULT 'Pending'
+            );
+            CREATE TABLE IF NOT EXISTS Order_Items (
+                id SERIAL PRIMARY KEY,
+                order_id INT REFERENCES Orders(id) ON DELETE CASCADE,
+                food_id INT REFERENCES Foods(id) ON DELETE CASCADE,
+                quantity INT NOT NULL
+            );
+        """)
+
+        cur.execute("SELECT * FROM Customers WHERE username = 'admin';")
+        if not cur.fetchone():
+            cur.execute("""
+                INSERT INTO Customers (username, password, email, phone_number, is_admin)
+                VALUES ('Mukimov', 'MUKIMO707', 'admin@mail.com', '800607070', TRUE);
+            """)
