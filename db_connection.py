@@ -41,10 +41,3 @@ def init_db():
                 quantity INT NOT NULL
             );
         """)
-
-        cur.execute("SELECT * FROM Customers WHERE username = 'admin';")
-        if not cur.fetchone():
-            cur.execute("""
-                INSERT INTO Customers (username, password, email, phone_number, is_admin)
-                VALUES ('Mukimov', 'MUKIMO707', 'admin@mail.com', '800607070', TRUE);
-            """)

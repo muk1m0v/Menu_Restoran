@@ -7,9 +7,9 @@ db_connection.init_db()
 
 while True:
     if not db_connection.current_user:
-        print("\n[1] Login")
-        print("[2] Register")
-        print("[0] Exit")
+        print("\n[1]  - Login")
+        print("[2]  - Register")
+        print("[0] - Exit")
         ok = input("Выберите действие: ")
         
         match ok:

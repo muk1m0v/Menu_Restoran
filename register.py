@@ -12,6 +12,7 @@ def register():
                 INSERT INTO Customers (username, password, email, phone_number, is_admin)
                 VALUES ('{username}', '{password}', '{email}', '{phone}', FALSE)
             """)
+            db_connection.conn.commit()
             print("Успешная регистрация!")
         except Exception as e:
             print("Ошибка регистрации:", e)

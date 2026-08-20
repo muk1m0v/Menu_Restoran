@@ -8,7 +8,7 @@ def user_menu():
     print("[2] Order table")
     print("[3] Order item")
     print("[4] Cancel order")
-    print("[5] Logout")
+    print("[0] Logout")
     choice = input("Выберите пункт: ")
 
     with db_connection.conn.cursor() as cur:
@@ -27,6 +27,7 @@ def user_menu():
 
                 cur.execute(f"SELECT MAX(id) FROM Orders WHERE customer_id = {customer_id}")
                 order_id = cur.fetchone()[0]
+                db_connection.conn.commit()
 
                 print(f"Заказ успешно создан! Ваш Order ID: {order_id}")
 
@@ -48,6 +49,7 @@ def user_menu():
                         WHERE oi.order_id = {order_id}
                     ) WHERE id = {order_id}
                 """)
+                db_connection.conn.commit()
                 print("Блюдо добавлено, общая сумма заказа пересчитана!")
 
             case "4":
@@ -69,7 +71,7 @@ def user_menu():
                 else:
                     print("Заказ не найден или принадлежит не вам.")
 
-            case "5":
+            case "0":
                 register.logout()
 
             case _:

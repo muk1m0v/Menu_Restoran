@@ -19,7 +19,8 @@ def admin_menu():
             case "1":
                 name = input("Food_name: ")
                 price = int(input("Цена: "))
-                cur.execute(f"INSERT INTO Foods (food_name, price) VALUES ('{name}', {price})")
+                cur.execute(f"INSERT INTO foods (food_name, price) VALUES ('{name}', {price})")
+                db_connection.conn.commit()
                 print("Блюдо добавлено!")
                 
             case "2":
@@ -33,11 +34,13 @@ def admin_menu():
                 fid = int(input("ID блюда: "))
                 price = int(input("Новая цена: "))
                 cur.execute(f"UPDATE Foods SET price={price} WHERE id={fid}")
+                db_connection.conn.commit()
                 print("Цена обновлена!")
                 
             case "4":
                 fid = int(input("Food_id: "))
                 cur.execute(f"DELETE FROM Foods WHERE id={fid}")
+                db_connection.conn.commit()
                 print("Блюдо удалено!")
                 
             case "5":
@@ -50,6 +53,7 @@ def admin_menu():
             case "6":
                 cid = int(input("Customer_id: "))
                 cur.execute(f"DELETE FROM Customers WHERE id={cid}")
+                db_connection.conn.commit()
                 print("Пользователь удалён!")
                 
             case "7":
