@@ -3,21 +3,21 @@ import register
 
 def admin_menu():
     print("\n--- ADMIN MENU ---")
-    print("[1] Add food")
-    print("[2] Get food")
-    print("[3] Change food")
-    print("[4] Delete food")
-    print("[5] Get customers")
-    print("[6] Delete customer")
-    print("[7] Get orders")
-    print("[8] Delete order")
-    print("[9] Logout")
+    print("[1] - Add food")
+    print("[2] - Get food")
+    print("[3] - Change food")
+    print("[4] - Delete food")
+    print("[5] - Get customers")
+    print("[6] - Delete customer")
+    print("[7] - Get orders")
+    print("[8] - Delete order")
+    print("[0] - Logout")
     choice = input("Выберите пункт: ")
 
     with db_connection.conn.cursor() as cur:
         match choice:
             case "1":
-                name = input("Название блюда: ")
+                name = input("Food_name: ")
                 price = int(input("Цена: "))
                 cur.execute(f"INSERT INTO Foods (food_name, price) VALUES ('{name}', {price})")
                 print("Блюдо добавлено!")
@@ -36,7 +36,7 @@ def admin_menu():
                 print("Цена обновлена!")
                 
             case "4":
-                fid = int(input("ID блюда для удаления: "))
+                fid = int(input("Food_id: "))
                 cur.execute(f"DELETE FROM Foods WHERE id={fid}")
                 print("Блюдо удалено!")
                 
@@ -48,7 +48,7 @@ def admin_menu():
                     print(f"ID: {c[0]} | Пользователь: {c[1]} | Email: {c[2]} | Телефон: {c[3]} | Admin: {c[4]}")
                     
             case "6":
-                cid = int(input("ID пользователя для удаления: "))
+                cid = int(input("Customer_id: "))
                 cur.execute(f"DELETE FROM Customers WHERE id={cid}")
                 print("Пользователь удалён!")
                 
@@ -60,11 +60,11 @@ def admin_menu():
                     print(f"Заказ ID: {o[0]} | Customer ID: {o[1]} | Сумма: {o[2]} | Стол: {o[3]} | Дата: {o[4]} | Статус: {o[5]}")
                     
             case "8":
-                oid = int(input("ID заказа для удаления: "))
+                oid = int(input("order_id: "))
                 cur.execute(f"DELETE FROM Orders WHERE id={oid}")
                 print("Заказ удалён!")
 
-            case "9":
+            case "0":
                 register.logout()
 
             case _:

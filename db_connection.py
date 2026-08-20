@@ -1,9 +1,12 @@
 import psycopg2
 
 conn = psycopg2.connect(
-    dbname="menu", user="postgres", password="MUKIMO707", host="localhost", port="5432"
+    dbname="menu", 
+    user="postgres", 
+    password="MUKIMO707", 
+    host="localhost", 
+    port="5432"
 )
-conn.autocommit = True
 
 current_user = None
 

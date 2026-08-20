@@ -51,7 +51,7 @@ def user_menu():
                 print("Блюдо добавлено, общая сумма заказа пересчитана!")
 
             case "4":
-                order_id = int(input("Order ID для отмены: "))
+                order_id = int(input("Order ID: "))
                 customer_id = db_connection.current_user[0]
 
                 cur.execute(f"SELECT order_date FROM Orders WHERE id={order_id} AND customer_id={customer_id}")
