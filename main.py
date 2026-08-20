@@ -10,9 +10,9 @@ while True:
         print("\n[1] Login")
         print("[2] Register")
         print("[0] Exit")
-        cmd = input("Выберите действие: ")
+        ok = input("Выберите действие: ")
         
-        match cmd:
+        match ok:
             case "1":
                 register.login()
             case "2":

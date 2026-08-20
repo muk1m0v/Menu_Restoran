@@ -23,27 +23,26 @@ def user_menu():
             case "2":
                 table_num = int(input("Номер столика: "))
                 customer_id = db_connection.current_user[0]
-                
-                cur.execute(f"""
-                    INSERT INTO Orders (customer_id, table_number) 
-                    VALUES ({customer_id}, {table_num}) RETURNING id
-                """)
+                cur.execute(f"INSERT INTO Orders (customer_id, table_number) VALUES ({customer_id}, {table_num})")
+
+                cur.execute(f"SELECT MAX(id) FROM Orders WHERE customer_id = {customer_id}")
                 order_id = cur.fetchone()[0]
+
                 print(f"Заказ успешно создан! Ваш Order ID: {order_id}")
 
             case "3":
                 order_id = int(input("Order ID: "))
                 food_id = int(input("Food ID: "))
                 qty = int(input("Количество: "))
-
+            
                 cur.execute(f"""
                     INSERT INTO Order_Items (order_id, food_id, quantity) 
                     VALUES ({order_id}, {food_id}, {qty})
                 """)
-
+            
                 cur.execute(f"""
                     UPDATE Orders SET total_price = (
-                        SELECT COALESCE(SUM(f.price * oi.quantity), 0)
+                        SELECT SUM(f.price * oi.quantity)
                         FROM Order_Items oi
                         JOIN Foods f ON oi.food_id = f.id
                         WHERE oi.order_id = {order_id}

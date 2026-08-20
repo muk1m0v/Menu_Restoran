@@ -10,7 +10,7 @@ def register():
         try:
             cur.execute(f"""
                 INSERT INTO Customers (username, password, email, phone_number, is_admin)
-                VALUES ({username}, {password}, {email}, {phone}, FALSE)
+                VALUES ('{username}', '{password}', '{email}', '{phone}', FALSE)
             """)
             print("Успешная регистрация!")
         except Exception as e:
@@ -21,7 +21,7 @@ def login():
     password = input("Password: ")
     
     with db_connection.conn.cursor() as cur:
-        cur.execute(f"SELECT id, username, password, email, phone_number, is_admin FROM Customers WHERE username={username} AND password={password}")
+        cur.execute(f"SELECT id, username, password, email, phone_number, is_admin FROM Customers WHERE username='{username}' AND password='{password}'")
         user = cur.fetchone()
         
         if user:
